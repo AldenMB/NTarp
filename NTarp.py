@@ -3,6 +3,7 @@ from scipy.stats import norm
 import warnings
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
 from sklearn.random_projection import GaussianRandomProjection
+from sklearn.exceptions import DataDimensionalityWarning
 
 
 class NTarp(TransformerMixin, ClusterMixin, BaseEstimator):
@@ -14,7 +15,9 @@ class NTarp(TransformerMixin, ClusterMixin, BaseEstimator):
         self.labels_ = None
 
     def fit(self, X, y=None):
-        self.projector.fit(X)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=DataDimensionalityWarning)
+            self.projector.fit(X)
         return self.refit(X)
 
     def refit(self, X, y=None):
