@@ -11,6 +11,7 @@ class NTarp(TransformerMixin, ClusterMixin, BaseEstimator):
         self.projector = GaussianRandomProjection(n, random_state=random_state)
         self.direction_ = None
         self.threshold_ = None
+        self.labels_ = None
 
     def fit(self, X, y=None):
         self.projector.fit(X)
@@ -21,6 +22,8 @@ class NTarp(TransformerMixin, ClusterMixin, BaseEstimator):
         direction_index = w(projection.T).argmin()
         self.direction_ = self.projector.components_[direction_index]
         self.threshold_ = threshold(X, self.direction_)
+        #needed for fit_predict:
+        self.labels_ = self.predict(X)
         return self
 
     def predict(self, X):
