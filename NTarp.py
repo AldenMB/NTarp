@@ -94,7 +94,7 @@ class NTarp(ClusterMixin, BaseEstimator):
         # inappropriate warning if n_features is less than n.
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=DataDimensionalityWarning)
-            self.projector.fit(X)
+            self.projector.fit(self.split(X)[0])
         return self.refit(X)
 
     def refit(self, X, y=None):
