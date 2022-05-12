@@ -94,7 +94,7 @@ class NTarp(ClusterMixin, BaseEstimator):
         # inappropriate warning if n_features is less than n.
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=DataDimensionalityWarning)
-            self.projector.fit(self.split(X)[0])
+            self.projector.fit(X)
         return self.refit(X)
 
     def refit(self, X, y=None):
@@ -106,7 +106,7 @@ class NTarp(ClusterMixin, BaseEstimator):
 
         # direction and threshold from the train data
         projection = self.projector.transform(train)
-        direction_index = w(train.T).argmin()
+        direction_index = w(projection.T).argmin()
         self.direction_ = self.projector.components_[direction_index]
         self.threshold_ = threshold(X, self.direction_)
 
