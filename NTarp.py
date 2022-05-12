@@ -168,7 +168,7 @@ def w(X, threshold=None):
         The threshold at which to compute w. If not provided,
         the best threshold is chosen for the given X.
     """
-    sorted_x = np.sort(X, axis=-1)
+    sorted_x = np.sort(X, axis=-1).astype(float)
     varlist = explained_variance_list(sorted_x, axis=-1)
     if threshold is None:
         best_variance = varlist.max(axis=-1)
@@ -185,7 +185,7 @@ def explained_variance_list(x, axis=-1):
     """
     Find the amount of variance explained by thresholding at each of the possible
     positions along x.
-    NOTE: x needs to be sorted.
+    NOTE: x needs to be sorted, and a float.
     """
     N = x.shape[axis]
     truncated = np.take(x, range(N - 1), axis=axis)
