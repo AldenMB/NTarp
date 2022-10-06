@@ -47,6 +47,9 @@ class NTarp(ClusterMixin, BaseEstimator):
 
     threshold_ : float
         the threshold used in definint the separating hyperplane.
+        
+    p_ : float
+        the p-value computed in the validation step
 
     Notes
     -----
@@ -108,11 +111,11 @@ class NTarp(ClusterMixin, BaseEstimator):
         projection = self.projector.transform(train)
         direction_index = w(projection.T).argmin()
         self.direction_ = self.projector.components_[direction_index]
-        self.threshold_ = threshold(X, self.direction_)
+        self.threshold_ = threshold(train, self.direction_)
 
         # a simple way to guarantee we do not split any data in this case
-        p = self.gaussian_p(test)
-        if p > self.p_threshold:
+        self.p_ = self.gaussian_p(test)
+        if self.p_ > self.p_threshold:
             self.threshold_ = np.inf
 
         # needed for fit_predict:
