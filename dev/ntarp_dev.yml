@@ -19,7 +19,7 @@ dependencies:
   - pytest
   - scikit-learn
   - seaborn
-  - sympyconda 
+  - sympy
   - twine
   - pip:
     - ckmeans-1d-dp
