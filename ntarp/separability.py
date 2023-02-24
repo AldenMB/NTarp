@@ -8,20 +8,16 @@ def w(x, threshold=None):
     """
     Compute the fraction of variance not explained by a simple thresholding.
     x is a numpy array holding the data on which W should be computed.
-    axis only works with its default value currently.
-    threshold should only be used when x is flat.
     """
     sorted_x = np.sort(x, axis=-1)
     varlist = explained_variance_list(sorted_x)
     if threshold is None:
         best_variance = varlist.max(axis=-1)
     else:
-        below_threshold_count = (sorted_x < threshold).sum()
-        if below_threshold_count in (0, len(sorted_x)):
-            best_variance = 0
-        else:
-            best_variance = varlist[below_threshold_count - 1]
-    return 1 - best_variance / sorted_x.var(axis=-1)
+        below_threshold_count = (sorted_x < threshold).sum(axis=-1)
+        boundaries = np.zeros_like(varlist[..., 0])[..., np.newaxis]
+        best_variance = np.concatenate([boundaries, varlist, boundaries], axis=-1)[below_threshold_count]
+    return np.maximum(1 - best_variance / sorted_x.var(axis=-1), 0) #handles occasional rounding errors
 
 
 def explained_variance_list(x):
@@ -67,7 +63,7 @@ def separate(data, direction, threshold_given=None):
 def threshold(data, direction):
     """
     Find a suitable threshold value which maximizes explained variance of the data projected onto direction.
-    NOTE: the chosen hyperplane would be described mathematically as $ x \dot direction = threshold $.
+    NOTE: the chosen hyperplane would be described mathematically as $ x \\dot direction = threshold $.
     """
     projected_data = np.inner(data, direction)
     sorted_x = np.sort(projected_data)
