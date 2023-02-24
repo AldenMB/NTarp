@@ -1,4 +1,4 @@
-name: scikernel
+name: ntarp_dev
 channels:
   - conda-forge
 dependencies: 
@@ -11,6 +11,7 @@ dependencies:
   - ipympl
   - ipytest
   - isort
+  - keyring
   - matplotlib
   - pip
   - progressbar2
@@ -18,7 +19,7 @@ dependencies:
   - pytest
   - scikit-learn
   - seaborn
-  - sympy
+  - sympyconda 
   - twine
   - pip:
     - ckmeans-1d-dp
