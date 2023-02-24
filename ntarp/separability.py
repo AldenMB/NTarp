@@ -4,38 +4,37 @@ from scipy.stats import norm
 import warnings
 
 
-def w(x, axis=-1, threshold=None):
+def w(x, threshold=None):
     """
     Compute the fraction of variance not explained by a simple thresholding.
     x is a numpy array holding the data on which W should be computed.
     axis only works with its default value currently.
     threshold should only be used when x is flat.
     """
-    sorted_x = np.sort(x, axis=axis)
-    varlist = explained_variance_list(sorted_x, axis=axis)
+    sorted_x = np.sort(x, axis=-1)
+    varlist = explained_variance_list(sorted_x)
     if threshold is None:
-        best_variance = varlist.max(axis=axis)
+        best_variance = varlist.max(axis=-1)
     else:
         below_threshold_count = (sorted_x < threshold).sum()
         if below_threshold_count in (0, len(sorted_x)):
             best_variance = 0
         else:
             best_variance = varlist[below_threshold_count - 1]
-    return 1 - best_variance / sorted_x.var(axis=axis)
+    return 1 - best_variance / sorted_x.var(axis=-1)
 
 
-def explained_variance_list(x, axis=-1):
+def explained_variance_list(x):
     """
     Find the amount of variance explained by thresholding at each of the possible
     positions along x.
     NOTE: x needs to be sorted.
     """
-    N = x.shape[axis]
-    truncated = np.take(x, range(N - 1), axis=axis)
-    s1 = np.cumsum(truncated, axis=axis)
-    s2 = np.expand_dims(x.sum(axis=axis), axis=axis) - s1
+    N = x.shape[-1]
+    s1 = np.cumsum(x[..., :-1], axis=-1)
+    s2 = np.cumsum(x[..., :0:-1], axis=-1)[..., ::-1]
     n1 = np.arange(1, N)
-    n2 = N - n1
+    n2 = np.arange(N-1, 0, -1)
     # I really would have liked to put it this way, because it is more readable:
     # return (s1*n2-s2*n1)**2 /(n1*n2*N*N)
     # however, this ends up as a significant bottleneck for memory.
