@@ -1,1 +1,1 @@
-from NTarp import NTarp
+from .NTarp import NTarp

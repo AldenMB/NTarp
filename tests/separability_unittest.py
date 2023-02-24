@@ -1,5 +1,5 @@
 import unittest
-import separability as sep
+from ntarp import separability as sep
 import numpy as np
 
 
@@ -7,17 +7,17 @@ class TestWFormula(unittest.TestCase):
     def test_explained_variance_against_unexplained(self):
         np.random.seed(1234)
         for X in [
-            np.arange(10, dtype=np.float),
+            np.arange(10, dtype=float),
             np.random.randn(100),
             np.zeros(10),
-            np.array([1], dtype=np.float),
-            np.array([], dtype=np.float),
+            np.array([1], dtype=float),
+            np.array([], dtype=float),
         ]:
             X.sort()
             n = len(X)
             unexplained_variance = np.fromiter(
                 (X[:i].var() * i + X[i:].var() * (n - i) for i in range(1, n)),
-                np.float,
+                float,
                 n - 1,
             )
             unexplained_variance /= n

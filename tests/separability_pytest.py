@@ -1,4 +1,4 @@
-import separability as sep
+from ntarp import separability as sep
 import numpy as np
 from hypothesis import given, assume, note
 from hypothesis.extra.numpy import arrays, floating_dtypes
@@ -16,7 +16,7 @@ def test_explained_variance(X):
     X.sort()
     n = len(X)
     unexplained_variance = np.fromiter(
-        (X[:i].var() * i + X[i:].var() * (n - i) for i in range(1, n)), np.float, n - 1,
+        (X[:i].var() * i + X[i:].var() * (n - i) for i in range(1, n)), float, n - 1,
     )
     unexplained_variance /= n
     explained_variance = sep.explained_variance_list(X)
