@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "NTarp"
+version = "0.0.1"
+authors = [{name = "Alden Bradford"}]
+description = "The NTarp clustering algorithm"
+readme = "README.md"
+
+[project.urls]
+homepage = "https://github.com/AldenMB/NTarp"

@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies: 
   - black
+  - build
   - conda-libmamba-solver
   - conda-tree
   - cookiecutter
@@ -18,6 +19,7 @@ dependencies:
   - scikit-learn
   - seaborn
   - sympy
+  - twine
   - pip:
     - ckmeans-1d-dp
     - diptest
