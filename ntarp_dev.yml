@@ -1,0 +1,24 @@
+name: scikernel
+channels:
+  - conda-forge
+dependencies: 
+  - black
+  - conda-libmamba-solver
+  - conda-tree
+  - cookiecutter
+  - hypothesis
+  - ipympl
+  - ipytest
+  - isort
+  - matplotlib
+  - pip
+  - progressbar2
+  - pyflakes
+  - pytest
+  - scikit-learn
+  - seaborn
+  - sympy
+  - pip:
+    - ckmeans-1d-dp
+    - diptest
+    - mpl_interactions[jupyter]
