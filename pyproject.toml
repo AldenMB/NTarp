@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "NTarp"
-version = "0.0.1"
+name = "ntarp"
+version = "0.0.2"
 authors = [{name = "Alden Bradford"}]
 description = "The NTarp clustering algorithm"
 readme = "README.md"
@@ -16,3 +16,6 @@ classifiers = [
 
 [project.urls]
 homepage = "https://github.com/AldenMB/NTarp"
+
+[tool.setuptools]
+packages = ["ntarp"]
