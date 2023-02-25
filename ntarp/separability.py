@@ -16,8 +16,12 @@ def w(x, threshold=None):
     else:
         below_threshold_count = (sorted_x < threshold).sum(axis=-1)
         boundaries = np.zeros_like(varlist[..., 0])[..., np.newaxis]
-        best_variance = np.concatenate([boundaries, varlist, boundaries], axis=-1)[below_threshold_count]
-    return np.maximum(1 - best_variance / sorted_x.var(axis=-1), 0) #handles occasional rounding errors
+        best_variance = np.concatenate([boundaries, varlist, boundaries], axis=-1)[
+            below_threshold_count
+        ]
+    return np.maximum(
+        1 - best_variance / sorted_x.var(axis=-1), 0
+    )  # handles occasional rounding errors
 
 
 def explained_variance_list(x):
@@ -30,7 +34,7 @@ def explained_variance_list(x):
     s1 = np.cumsum(x[..., :-1], axis=-1)
     s2 = np.cumsum(x[..., :0:-1], axis=-1)[..., ::-1]
     n1 = np.arange(1, N)
-    n2 = np.arange(N-1, 0, -1)
+    n2 = np.arange(N - 1, 0, -1)
     # I really would have liked to put it this way, because it is more readable:
     # return (s1*n2-s2*n1)**2 /(n1*n2*N*N)
     # however, this ends up as a significant bottleneck for memory.
@@ -47,7 +51,7 @@ def separate(data, direction, threshold_given=None):
     """
     Give a boolean mask separating data by a computed threshold along direction. To facilitate comparison,
     the first entry of the mask will always be True.
-    
+
     If the optional parameter threshold_given is provided, it is used instead of computing the best threshold.
     """
     projected_data = np.inner(data, direction)
@@ -76,7 +80,7 @@ def n_tarp(data, n, times=1):
     Perform n-TARP clustering on data, where the last axis of data is taken to be
     the coordinates of each data point. Because all the relevant information about the generated clusters can
     be concluded from just the direction of projection and the data, only the computed direction vectors are returned.
-    
+
     The optional parameter times is given as a vectorized way of performing n-tarp repeatedly.
     This is good for testing purposes, but if a better projection is all that is desired then it would be better to
     simply increase n.
@@ -119,10 +123,10 @@ def distribution_of_w_assuming_gaussian_data(n):
                 n
             )
         )
-    k2 = (8 * (np.pi - 3)) / np.pi ** 2
+    k2 = (8 * (np.pi - 3)) / np.pi**2
     s2 = 1 - (2 / np.pi)
     return norm(
-        loc=s2 - 1 / n, scale=np.sqrt(k2 / n - 0.4 / n ** 1.9)
+        loc=s2 - 1 / n, scale=np.sqrt(k2 / n - 0.4 / n**1.9)
     )  # these constants were determined empirically to work well even for low n.
 
 
